@@ -5,38 +5,68 @@
 using namespace std;
 
 char*** create3DArray(unsigned int rows, unsigned int cols, unsigned int n);
-char** create2DArray(unsigned int rows, unsigned int cols);
-char*** extract_bitplanes(char** bitmap);
-char** extract_bitplane(char** bitmap, int mask);
+char** create2DArray(unsigned int rows, unsigned int cols, int values);
+char*** extract_bitplanes(char** bitmap, unsigned int rows, unsigned int cols);
+char** extract_bitplane(char** bitmap, unsigned int rows, unsigned int cols, int mask);
+char** join_bitplanes(char*** bitplanes, unsigned int rows, unsigned int cols);
+void print2Darray(char** array, unsigned int rows, unsigned int cols);
 
 int main() {
-	string x = "";
-	getline(cin, x);
+
+	cout << "Extracting bitplanes" << endl;
 
 	//default size value for bitplane to have something to work on
-	unsigned int rows = 4;
-	unsigned int cols = 3;
+	unsigned int rows = 16;
+	unsigned int cols = 16;
 
-	char** bitmap = create2DArray(rows, cols);
-	char*** bitplanes = extract_bitplanes(bitmap);
+	//entry bitmap
+	char** bitmap = create2DArray(rows, cols, 1);
 
-	cout << "wypisywanie bitplejna" << endl;
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < cols; j++) {
-			cout << int(bitplanes[1][i][j]) << " ";
-		}
-		cout << endl;
-	}
+	//print entry bitmap into console
+	cout << "Entry bitmap:" << endl;
+	print2Darray(bitmap, rows, cols);
 
-	getline(cin, x);
+	//extracting bitplanes
+	char*** bitplanes = extract_bitplanes(bitmap, rows, cols);
+
+	//code to print array into console
+	//n - number of bitplane to show
+	int n = 2;
+	cout << "Bitplane " << n << ":" << endl;
+	print2Darray(bitplanes[n], rows, cols);
+
+	cout << "Joining bitplanes" << endl;
+
+	//output bitmap
+	char** output_bitmap = join_bitplanes(bitplanes, rows, cols);
+
+	//print output bitmap to console
+	cout << "Output bitmap:" << endl;
+	print2Darray(output_bitmap, rows, cols);
+
+	system("pause");
 
 	return 0;
 }
 
-char** create2DArray(unsigned int rows, unsigned int cols)
+void print2Darray(char** array, unsigned int rows, unsigned int cols) {
+
+	cout << "rows: " << rows << ", columns: " << cols << endl;
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			cout << int(array[i][j]) << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
+char** create2DArray(unsigned int rows, unsigned int cols, int values)
 {
 	char** array2D = 0;
 	array2D = new char*[rows];
+	int counter = 0;
 
 	for (int r = 0; r < rows; r++)
 	{
@@ -44,7 +74,11 @@ char** create2DArray(unsigned int rows, unsigned int cols)
 
 		for (int c = 0; c < cols; c++)
 		{
-			array2D[r][c] = c + cols * r;
+			if (values == 0)
+				array2D[r][c] = 0;
+			else
+				array2D[r][c] = counter;
+				counter++;
 		}
 	}
 
@@ -58,40 +92,58 @@ char*** create3DArray(unsigned int rows, unsigned int cols, unsigned int n)
 
 	for (int i = 0; i < n; i++)
 	{
-		array3D[i] = create2DArray(rows, cols);
+		array3D[i] = create2DArray(rows, cols, 1);
 	}
 
 	return array3D;
 }
 
-char*** extract_bitplanes(char** bitmap) {
+char*** extract_bitplanes(char** bitmap, unsigned int rows, unsigned int cols) {
 
 	char** bitplane = 0;
 	char*** bitplanes = 0;
-
-	unsigned int rows = sizeof bitmap / sizeof bitmap[0];  
-	unsigned int cols = sizeof bitmap[0] / sizeof(char);
 	char bitplanes_count = 8;
 
 	bitplanes = create3DArray(rows, cols, bitplanes_count);
 
 	for (int i = 0; i < 8; i++) {
 		int mask = 0b00000001 << i;
-		bitplane = extract_bitplane(bitmap, mask);
+		bitplane = extract_bitplane(bitmap, rows, cols, mask);
 		bitplanes[i] = bitplane;
 	}
 
 	return bitplanes;
 }
 
-char** extract_bitplane(char** bitmap, int mask) {
+char** extract_bitplane(char** bitmap, unsigned int rows, unsigned int cols, int mask) {
 
-	char** bitplane = create2DArray(4, 4);
-	cout << "Mask: " << mask << endl;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
+	char** bitplane = create2DArray(rows, cols, 1);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
 			bitplane[i][j] = (char)(int(bitmap[i][j]) & mask);
-			//cout << int(bitplane[i][j]) << ", " << bitmap[i][j] << ", " << int(bitmap[i][j]) << endl;
+		}
+	}
+
+	return bitplane;
+}
+
+char** join_bitplanes(char*** bitplanes, unsigned int rows, unsigned int cols) {
+
+	char** bitplane = 0;
+	int n = 8;
+
+	bitplane = create2DArray(rows, cols, 0);
+
+	for (int i = 0; i < n; i++) {
+		if (bitplanes[i] == NULL) {
+			continue;
+		}
+		else {
+			for (int r = 0; r < rows; r++) {
+				for (int c = 0; c < cols; c++) {
+					bitplane[r][c] += bitplanes[i][r][c];
+				}
+			}
 		}
 	}
 
