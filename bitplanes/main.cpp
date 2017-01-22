@@ -11,9 +11,9 @@ int main() {
 	string x = "";
 	getline(cin, x);
 
-	char bitmap[4][4] = { { 'a', 'b', 'c', 'd' }, { 'e', 'f', 'g', 'h' },{ 'i', 'j', 'k', 'l' },{ 'm', 'n', 'o', 'p' } };
+	char bitmap[4][4] = { { 'a', 'b', 'c', 'd' },{ 'e', 'f', 'g', 'h' },{ 'i', 'j', 'k', 'l' },{ 'm', 'n', 'o', 'p' } };
 	char* bitplanes = extract_bitplanes(bitmap);
-	
+
 	cout << bitplanes[0] << endl;
 	cout << bitplanes[1] << endl;
 	for (int i = 0; i < 4; i++) {
