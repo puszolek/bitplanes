@@ -34,7 +34,6 @@ int main() {
 	int n = 2;
 	cout << "Bitplane " << n << ":" << endl;
 	print2Darray(bitplanes[n], rows, cols);
-
 	cout << "Joining bitplanes" << endl;
 
 	//output bitmap
