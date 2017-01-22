@@ -1,7 +1,8 @@
 ﻿  main.cpp
-f:\projekty\bitplanes\bitplanes\main.cpp(23): warning C4018: '<': signed/unsigned mismatch
-f:\projekty\bitplanes\bitplanes\main.cpp(38): warning C4018: '<': signed/unsigned mismatch
-f:\projekty\bitplanes\bitplanes\main.cpp(42): warning C4018: '<': signed/unsigned mismatch
-f:\projekty\bitplanes\bitplanes\main.cpp(56): warning C4018: '<': signed/unsigned mismatch
+f:\projekty\bitplanes\bitplanes\main.cpp(24): warning C4018: '<': signed/unsigned mismatch
+f:\projekty\bitplanes\bitplanes\main.cpp(25): warning C4018: '<': signed/unsigned mismatch
+f:\projekty\bitplanes\bitplanes\main.cpp(41): warning C4018: '<': signed/unsigned mismatch
+f:\projekty\bitplanes\bitplanes\main.cpp(45): warning C4018: '<': signed/unsigned mismatch
+f:\projekty\bitplanes\bitplanes\main.cpp(59): warning C4018: '<': signed/unsigned mismatch
   bitplanes.vcxproj -> F:\Projekty\bitplanes\Debug\bitplanes.exe
   bitplanes.vcxproj -> F:\Projekty\bitplanes\Debug\bitplanes.pdb (Full PDB)

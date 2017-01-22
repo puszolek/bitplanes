@@ -4,7 +4,8 @@
 
 using namespace std;
 
-char** create2DArray(unsigned height, unsigned width);
+char*** create3DArray(unsigned int rows, unsigned int cols, unsigned int n);
+char** create2DArray(unsigned int rows, unsigned int cols);
 char*** extract_bitplanes(char** bitmap);
 char** extract_bitplane(char** bitmap, int mask);
 
@@ -12,16 +13,18 @@ int main() {
 	string x = "";
 	getline(cin, x);
 
-	unsigned int size = 4;
+	//default size value for bitplane to have something to work on
+	unsigned int rows = 4;
+	unsigned int cols = 3;
 
-	char** bitmap = create2DArray(size, size);
-	cout << bitmap[1][0] << endl;
+	char** bitmap = create2DArray(rows, cols);
 	char*** bitplanes = extract_bitplanes(bitmap);
 
-	cout << bitplanes[0] << endl;
-	cout << bitplanes[1] << endl;
-	for (int i = 0; i < size; i++) {
-		//cout << bitplanes[0][i] << endl;
+	cout << "wypisywanie bitplejna" << endl;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			cout << int(bitplanes[1][i][j]) << " ";
+		}
 		cout << endl;
 	}
 
@@ -75,7 +78,6 @@ char*** extract_bitplanes(char** bitmap) {
 	for (int i = 0; i < 8; i++) {
 		int mask = 0b00000001 << i;
 		bitplane = extract_bitplane(bitmap, mask);
-		cout << bitplane[0][0] << endl;
 		bitplanes[i] = bitplane;
 	}
 
@@ -89,12 +91,9 @@ char** extract_bitplane(char** bitmap, int mask) {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			bitplane[i][j] = (char)(int(bitmap[i][j]) & mask);
-			cout << int(bitplane[i][j]) << ", " << bitmap[i][j] << ", " << int(bitmap[i][j]) << endl;
+			//cout << int(bitplane[i][j]) << ", " << bitmap[i][j] << ", " << int(bitmap[i][j]) << endl;
 		}
 	}
-
-	cout << bitmap[0][0] << endl;
-	cout << int(bitplane[0][0]) << endl;
 
 	return bitplane;
 }
